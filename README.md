@@ -52,6 +52,13 @@ It will run the following sub tasks and install the following things on the syst
 
 Once everything is done, we can find all code under `~/code/p4` folder. And we are ready to go!
 
+## Cheat Sheet
+
+- `just --list`: List all build tasks.
+- `just init`: Initialize dev enrivonment. Please read the guidance above for more details.
+- `just run-1sw <bm-exe> <bm-json>`: Run 1 switch demo with specific P4 programs.
+  - e.g. `just run-1sw ~/code/p4/behavioral-model/targets/simple_router/simple_router ~/code/p4/behavioral-model/targets/simple_router/simple_router.json`
+
 # LICENSE
 
 MIT.
