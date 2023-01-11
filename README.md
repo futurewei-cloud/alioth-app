@@ -20,10 +20,10 @@ Installing `just` is easy. On Ubuntu, we can use snap:
 sudo snap install --edge --classic just
 ```
 
-If you are using ARM-based system, we need to [install rust](https://www.rust-lang.org/tools/install) and run following command to get it installed:
+If you are using ARM-based system, we can install just with prebuild release with the command below:
 
 ```bash
-cargo install just
+curl --proto '=https' --tlsv1.3 -sSf https://just.systems/install.sh | sudo bash -s -- --to /usr/local/bin
 ```
 
 For more information, feel free to check the following links:
