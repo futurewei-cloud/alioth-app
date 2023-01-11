@@ -109,6 +109,9 @@ init-open-tofino:
 run-1sw BM_EXE BM_JSON:
     sudo python "{{BMV2_DIR}}/mininet/1sw_demo.py" --behavioral-exe "{{BM_EXE}}" --json "{{BM_JSON}}"
 
+run-bmv2-demo DEMO_NAME:
+    @just run-1sw "{{BMV2_DIR}}/targets/{{DEMO_NAME}}/{{DEMO_NAME}}" "{{BMV2_DIR}}/targets/{{DEMO_NAME}}/{{DEMO_NAME}}.json"
+
 #
 # Utility tasks
 #

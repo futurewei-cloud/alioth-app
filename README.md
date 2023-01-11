@@ -58,6 +58,9 @@ Once everything is done, we can find all code under `~/code/p4` folder. And we a
 - `just init`: Initialize dev enrivonment. Please read the guidance above for more details.
 - `just run-1sw <bm-exe> <bm-json>`: Run 1 switch demo with specific P4 programs.
   - e.g. `just run-1sw ~/code/p4/behavioral-model/targets/simple_router/simple_router ~/code/p4/behavioral-model/targets/simple_router/simple_router.json`
+- `just run-bmv2-demo <demo-name>`: It calls run-1sw to run the bmv2 demo.
+  - e.g. `just run-bmv2-demo l2_switch`
+  - Certain demo cannot be run in this way, because it doesn't have the json configuration.
 
 ## LICENSE
 
