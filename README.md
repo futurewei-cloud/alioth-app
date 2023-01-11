@@ -2,15 +2,15 @@
 
 Alioth applications.
 
-# Gettting started
+## Gettting started
 
-## OS
+### OS
 
 We recommand using `Ubuntu` as the OS, since it so far has the best support on P4 related things. All of our utility scripts are based on Ubuntu as well, so you will get the best support.
 
 If you are using WSL on Windows, we highly recommend to switch to using a Ubuntu Hyper-V VM instead. This is because the Linux kernel that WSL uses doesn't have certain features, so it cannot get openvswitch installed, which will cause mininet fail to run.
 
-## Installing `just`
+### Installing `just`
 
 Instead of using `make`, we are using `just` instead in order to make writing makefile easier.
 
@@ -32,7 +32,7 @@ For more information, feel free to check the following links:
 - Installing `rust`: <https://www.rust-lang.org/tools/install>
 - Installing snap: <https://snapcraft.io/docs/installing-snap-on-ubuntu>
 
-## Installing dev environment
+### Installing dev environment
 
 All dev initialization steps are included in our `just` makefile. So we can simply run the following command to get the dev environment initlaized. 
 
@@ -52,13 +52,13 @@ It will run the following sub tasks and install the following things on the syst
 
 Once everything is done, we can find all code under `~/code/p4` folder. And we are ready to go!
 
-## Cheat Sheet
+### Cheat Sheet
 
 - `just --list`: List all build tasks.
 - `just init`: Initialize dev enrivonment. Please read the guidance above for more details.
 - `just run-1sw <bm-exe> <bm-json>`: Run 1 switch demo with specific P4 programs.
   - e.g. `just run-1sw ~/code/p4/behavioral-model/targets/simple_router/simple_router ~/code/p4/behavioral-model/targets/simple_router/simple_router.json`
 
-# LICENSE
+## LICENSE
 
 MIT.
