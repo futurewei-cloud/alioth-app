@@ -6,7 +6,7 @@ Alioth applications.
 
 ### OS
 
-We recommand using `Ubuntu` as the OS, since it so far has the best support on P4 related things. All of our utility scripts are based on Ubuntu as well, so you will get the best support.
+We recommand using `Ubuntu` (>=20.04) as the OS, since it is by far the OS with the best support on P4 related things. All of our utility scripts are based on Ubuntu as well, so you will get the best experience.
 
 If you are using WSL on Windows, we highly recommend to switch to using a Ubuntu Hyper-V VM instead. This is because the Linux kernel that WSL uses doesn't have certain features, so it cannot get openvswitch installed, which will cause mininet fail to run.
 
@@ -20,7 +20,7 @@ Installing `just` is easy. On Ubuntu, we can use snap:
 sudo snap install --edge --classic just
 ```
 
-If you are using ARM-based system, we can install just with prebuild release with the command below:
+If you are using ARM-based system, we can install `just` with prebuild release using the command below:
 
 ```bash
 curl --proto '=https' --tlsv1.3 -sSf https://just.systems/install.sh | sudo bash -s -- --to /usr/local/bin
@@ -30,11 +30,11 @@ For more information, feel free to check the following links:
 
 - `just` packages: <https://github.com/casey/just#packages>
 - Installing `rust`: <https://www.rust-lang.org/tools/install>
-- Installing snap: <https://snapcraft.io/docs/installing-snap-on-ubuntu>
+- Installing `snap`: <https://snapcraft.io/docs/installing-snap-on-ubuntu>
 
 ### Installing dev environment
 
-All dev initialization steps are included in our `just` makefile. So we can simply run the following command to get the dev environment initlaized. 
+All dev environment initialization steps are included in our `just` makefile. So we can simply run the following command to get the dev environment initlaized. 
 
 ```bash
 just init
@@ -42,7 +42,7 @@ just init
 
 It will run the following sub tasks and install the following things on the system. Every sub task is self-contained, so if any tasks fails, we can rerun the specific task to get things fixed.
 
-| Project | Task |
+| Task | Dependency |
 | - | - |
 | init-p4c | [p4c](https://github.com/p4lang/p4c) |
 | init-p4-bmv2 | [bmv2](https://github.com/p4lang/behavioral-model) |
