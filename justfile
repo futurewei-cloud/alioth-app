@@ -137,26 +137,26 @@ p4c-clean PROG_NAME:
 #
 # P4 mininet tasks
 #
-ss PROG_NAME:
-    @just bm-1sw "{{BMV2_DIR}}/targets/simple_switch/simple_switch" "{{OUT_DIR}}/{{PROG_NAME}}/{{PROG_NAME}}.json"
+ss PROG_NAME *ARGS="":
+    @just bm-1sw "{{BMV2_DIR}}/targets/simple_switch/simple_switch" "{{OUT_DIR}}/{{PROG_NAME}}/{{PROG_NAME}}.json" {{ARGS}}
 
-psa PROG_NAME:
-    @just bm-1sw "{{BMV2_DIR}}/targets/psa_switch/psa_switch" "{{OUT_DIR}}/{{PROG_NAME}}/{{PROG_NAME}}.json"
+psa PROG_NAME *ARGS="":
+    @just bm-1sw "{{BMV2_DIR}}/targets/psa_switch/psa_switch" "{{OUT_DIR}}/{{PROG_NAME}}/{{PROG_NAME}}.json" {{ARGS}}
 
-bm-1sw BM_EXE BM_JSON:
-    sudo python "{{BMV2_DIR}}/mininet/1sw_demo.py" --behavioral-exe "{{BM_EXE}}" --json "{{BM_JSON}}"
+bm-1sw BM_EXE BM_JSON *ARGS="":
+    sudo python "{{BMV2_DIR}}/mininet/1sw_demo.py" --behavioral-exe "{{BM_EXE}}" --json "{{BM_JSON}}" {{ARGS}}
 
-bm-demo DEMO_NAME:
-    @just bm-1sw "{{BMV2_DIR}}/targets/{{DEMO_NAME}}/{{DEMO_NAME}}" "{{BMV2_DIR}}/targets/{{DEMO_NAME}}/{{DEMO_NAME}}.json"
+bm-demo DEMO_NAME *ARGS="":
+    @just bm-1sw "{{BMV2_DIR}}/targets/{{DEMO_NAME}}/{{DEMO_NAME}}" "{{BMV2_DIR}}/targets/{{DEMO_NAME}}/{{DEMO_NAME}}.json" {{ARGS}}
 
-bm-cli THRIFT_PORT="9090":
-    "{{BMV2_DIR}}/tools/runtime_CLI.py" --thrift-port {{THRIFT_PORT}}
+bm-cli THRIFT_PORT="9090" *ARGS="":
+    "{{BMV2_DIR}}/tools/runtime_CLI.py" --thrift-port {{THRIFT_PORT}} {{ARGS}}
 
-bm-log THRIFT_PORT="9090":
-    "{{BMV2_DIR}}/tools/nanomsg_client.py" --thrift-port {{THRIFT_PORT}}
+bm-log THRIFT_PORT="9090" *ARGS="":
+    "{{BMV2_DIR}}/tools/nanomsg_client.py" --thrift-port {{THRIFT_PORT}} {{ARGS}}
 
-bm-dbg THRIFT_PORT="9090":
-    sudo "{{BMV2_DIR}}/tools/p4dbg.py" --thrift-port {{THRIFT_PORT}}
+bm-dbg THRIFT_PORT="9090" *ARGS="":
+    sudo "{{BMV2_DIR}}/tools/p4dbg.py" --thrift-port {{THRIFT_PORT}} {{ARGS}}
 
 #
 # Utility tasks
