@@ -11,6 +11,8 @@ COLOR_BLUE := '\033[0;34m'
 COLOR_RED := '\033[0;31m'
 COLOR_NONE := '\033[0m'
 
+OUT_DIR := justfile_directory() + "/out"
+
 #
 # Init tasks: Installing build tools and etc
 #
@@ -73,7 +75,6 @@ init-p4-bmv2:
     ./autogen.sh
     ./configure 'CXXFLAGS=-O0 -g' --enable-debugger
     make
-    sudo make install
     cd "{{justfile_directory()}}"
     just _log-info ""
 
@@ -104,13 +105,58 @@ init-open-tofino:
     just _clone-repo "OpenTofino" "https://github.com/barefootnetworks/Open-Tofino.git" "{{OPEN_TOFINO_DIR}}"
 
 #
-# P4 demo tasks
+# P4 compile tasks
 #
-run-1sw BM_EXE BM_JSON:
+p4c-ss P4_FILE_PATH:
+    @just p4c p4c-bm2-ss "{{P4_FILE_PATH}}"
+
+p4c CC P4_FILE_PATH:
+    #!/usr/bin/env bash
+
+    P4_FILE_FULL_NAME="{{P4_FILE_PATH}}"
+    P4_FILE_NAME="${P4_FILE_FULL_NAME##*/}"
+    P4_FILE_NAME="${P4_FILE_NAME%.*}"
+    BUILD_DIR="{{OUT_DIR}}/${P4_FILE_NAME}";
+
+    just _log-head "Compiling P4 program:"
+    just _log-info "- Input file: {{P4_FILE_PATH}}"
+    just _log-info "- Build folder: ${BUILD_DIR}"
+    just _log-info ""
+
+    if [ ! -d "${BUILD_DIR}" ]; then
+        just _log-info "Creating build folder: ${BUILD_DIR}"
+        mkdir -p "${BUILD_DIR}";
+    fi
+
+    just _log-info "Invoking p4c ..."
+    {{CC}} --std p4-16 "{{P4_FILE_PATH}}" -o "${BUILD_DIR}/${P4_FILE_NAME}.json" --p4runtime-files "${BUILD_DIR}/${P4_FILE_NAME}_runtime.json","${BUILD_DIR}/${P4_FILE_NAME}_runtime.txt","${BUILD_DIR}/${P4_FILE_NAME}_runtime.bin"
+
+p4c-clean PROG_NAME:
+    rm -rf "{{OUT_DIR}}/{{PROG_NAME}}"
+
+#
+# P4 mininet tasks
+#
+ss PROG_NAME:
+    @just bm-1sw "{{BMV2_DIR}}/targets/simple_switch/simple_switch" "{{OUT_DIR}}/{{PROG_NAME}}/{{PROG_NAME}}.json"
+
+psa PROG_NAME:
+    @just bm-1sw "{{BMV2_DIR}}/targets/psa_switch/psa_switch" "{{OUT_DIR}}/{{PROG_NAME}}/{{PROG_NAME}}.json"
+
+bm-1sw BM_EXE BM_JSON:
     sudo python "{{BMV2_DIR}}/mininet/1sw_demo.py" --behavioral-exe "{{BM_EXE}}" --json "{{BM_JSON}}"
 
-run-bmv2-demo DEMO_NAME:
-    @just run-1sw "{{BMV2_DIR}}/targets/{{DEMO_NAME}}/{{DEMO_NAME}}" "{{BMV2_DIR}}/targets/{{DEMO_NAME}}/{{DEMO_NAME}}.json"
+bm-demo DEMO_NAME:
+    @just bm-1sw "{{BMV2_DIR}}/targets/{{DEMO_NAME}}/{{DEMO_NAME}}" "{{BMV2_DIR}}/targets/{{DEMO_NAME}}/{{DEMO_NAME}}.json"
+
+bm-cli THRIFT_PORT="9090":
+    "{{BMV2_DIR}}/tools/runtime_CLI.py" --thrift-port {{THRIFT_PORT}}
+
+bm-log THRIFT_PORT="9090":
+    "{{BMV2_DIR}}/tools/nanomsg_client.py" --thrift-port {{THRIFT_PORT}}
+
+bm-dbg THRIFT_PORT="9090":
+    sudo "{{BMV2_DIR}}/tools/p4dbg.py" --thrift-port {{THRIFT_PORT}}
 
 #
 # Utility tasks

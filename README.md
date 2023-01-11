@@ -52,15 +52,77 @@ It will run the following sub tasks and install the following things on the syst
 
 Once everything is done, we can find all code under `~/code/p4` folder. And we are ready to go!
 
-### Cheat Sheet
+## Running a P4 program
+
+To run a P4 program, we need to compile the specific program, load it in mininet as well as launching a CLI for running runtime commands. These can be achieved with the following steps:
+
+1. Use `p4c-ss` task to compile the program:
+
+   ```bash
+   just p4c-ss <P4_FILE_PATH>
+   ```
+
+   e.g.
+   ```bash
+   just p4c-ss ~/code/p4/tutorials/exercises/basic/basic.p4
+   ```
+
+   This will compile the P4 program and generate the output into `./out/basic` folder.
+
+2. Use `ss` task to launch the program.
+
+   ```bash
+   just ss <PROG_NAME>
+   ```
+
+   e.g.
+   ```bash
+   just ss basic
+   ```
+
+   This will use the generated P4 bmv2 program `./out/basic/basic.json` to launch the mininet. And we can start to play with it.
+
+3. In the end, use `bm-cli` task to launch the CLI for running the runtime commands:
+
+   ```bash
+   just bm-cli
+   ```
+
+## Debug BMv2
+
+In order to enable BMv2 debugger, please manually change the `behavioral-model/tools/p4_mininet.py` file to update the `enable_debugger` parameter default value to `True`.
+
+Then while the mininet is running, run:
+
+```bash
+just bm-dbg
+```
+
+It requires root access to run the debugger, so it will ask for sudo password. And after running it, this will launch the debugger as below:
+
+```bash
+$ just bm-dbg
+sudo "/home/r12f/code/p4/behavioral-model/tools/p4dbg.py" --thrift-port 9090
+'--socket' not provided, using ipc:///tmp/bmv2-0-debug.ipc (obtained from switch)
+Obtaining JSON from switch...
+Done
+Connecting to the switch...
+Connection established
+Prototype for Debugger UI
+P4DBG:
+```
+
+## Cheat Sheet
 
 - `just --list`: List all build tasks.
 - `just init`: Initialize dev enrivonment. Please read the guidance above for more details.
-- `just run-1sw <bm-exe> <bm-json>`: Run 1 switch demo with specific P4 programs.
-  - e.g. `just run-1sw ~/code/p4/behavioral-model/targets/simple_router/simple_router ~/code/p4/behavioral-model/targets/simple_router/simple_router.json`
-- `just run-bmv2-demo <demo-name>`: It calls run-1sw to run the bmv2 demo.
-  - e.g. `just run-bmv2-demo l2_switch`
-  - Certain demo cannot be run in this way, because it doesn't have the json configuration.
+- `just bm-1sw <bm-exe> <bm-json>`: Run 1 switch demo with specific P4 programs.
+  - e.g. `just bm-1sw ~/code/p4/behavioral-model/targets/simple_router/simple_router ~/code/p4/behavioral-model/targets/simple_router/simple_router.json`
+- `just p4c-ss <P4_FILE_PATH>`: Compile the P4 program into `./out/<P4_PROGRAM_NAME>` folder.
+- `just ss <P4_PROGRAM_NAME>`: Launch mininet with the `<P4_PROGRAM_NAME>` from the out folder loaded.
+- `just bm-cli`: Launch CLI for running P4 runtime commands.
+- `just bm-log`: Launch nanomsg log listener for listenling to logs.
+- `just bm-dbg`: Launch bmv2 debugger.
 
 ## LICENSE
 
