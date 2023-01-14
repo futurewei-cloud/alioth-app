@@ -2,6 +2,29 @@
 
 Alioth applications.
 
+## Repo structure
+
+All applications are organized in following structure:
+
+```
+- <app-name>: the root folder of each application
+  - src: source folder
+  - script: scripts, e.g. scripts for testing
+  - data: extra data if any, e.g. test inputs and etc
+```
+
+The application could have PoCs, which will resides within each application folder and follows the same folder structure as below:
+
+```
+- <app-name>: the root folder of each application
+  - poc: folder for all PoCs
+    - <poc-name>:
+      - src: source folder
+        - <poc-name>.<arch>.p4: The arch can be bmv2, tna, ebpf and etc.
+      - script: scripts, e.g. scripts for testing
+      - data: extra data if any, e.g. test inputs and etc
+```
+
 ## Gettting started
 
 ### OS
