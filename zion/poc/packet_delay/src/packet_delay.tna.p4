@@ -17,9 +17,9 @@ const bit<32> latency = 100000000;   // 100000000 nanoseconds - 100ms
 
 header ts_h {
     bit<16> proto_id;
-    bit<16> rec_num; // switch needs to recirculate the packet rec_num times
-    bit<32> ts; // record the initial timestamp
-    bit<8>  flag; // when the total recirculation time exceeds latency, flag=1
+    bit<16> rec_num; // record how many times the packet is recirculated, initially 0
+    bit<32> ts;      // record the initial timestamp
+    bit<8>  flag;    // when the total recirculation time exceeds latency, flag=1
 }
 
 struct headers {
@@ -96,6 +96,9 @@ control SwitchIngress(
     // Register to validate the latency value 
     Register <bit<32>, _> (32w1)  tscal;
 
+    // Comparing two variables on Tofino (though one is constant) 
+    // can not be done in the apply part due to ALU limitations, 
+    // so we need a RegisterAction
     RegisterAction<bit<32>, bit<1>, bit<8>>(tscal) tscal_action = {
         void apply(inout bit<32> value, out bit<8> readvalue) {
             value = 0;
@@ -118,7 +121,7 @@ control SwitchIngress(
     }
 
     // Recirculate the packet to the recirculation port
-    // Decrease the recirculation number
+    // Increase the recirculation number
     action recirculate(){
         ig_intr_tm_md.ucast_egress_port = rec_port;
         hdr.timestamp.rec_num = hdr.timestamp.rec_num + 1;      
